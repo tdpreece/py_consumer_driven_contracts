@@ -1,0 +1,11 @@
+#!python
+# Distutils will sort out the path to python in 
+# the shebang above.
+
+
+def main():
+    print('hello')
+
+
+if __name__ == '__main__':
+    main()

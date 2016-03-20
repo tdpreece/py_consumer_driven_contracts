@@ -10,7 +10,7 @@ class MockProviderSmokeTest(TestCase):
         host = '0.0.0.0'
         port = '1911'
         stdout = subprocess.check_output(
-            ['mockprovider', '-h', host, '-p', port]
+            ['mockprovider', '-p', port]
         )
         expected_startup_message = 'Mock provider started on {}:{}'.format(
             host,

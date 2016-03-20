@@ -3,3 +3,4 @@
 .coverage
 .tox
 devenv/
+*.egg-info

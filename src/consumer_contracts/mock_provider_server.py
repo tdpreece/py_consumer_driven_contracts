@@ -1,7 +1,6 @@
 import argparse
-import os
+import subprocess
 
-import daemon
 from flask import Flask
 
 app = Flask(__name__)
@@ -12,9 +11,13 @@ def get_commandline_arguments():
     parser.add_argument(
         '-p', '--port',
         action='store',
+        required=False,
         help='port that mock provider is running'
     )
-    return vars(parser.parse_args())
+    parser.add_argument('command', nargs=1)
+    arg_dict = vars(parser.parse_args())
+    arg_dict['command'] = arg_dict['command'][0]
+    return arg_dict
 
 
 @app.route('/status')
@@ -24,11 +27,17 @@ def status():
 
 def main():
     commandline_args = get_commandline_arguments()
-    host = "0.0.0.0"
-    port = commandline_args.get('port')
-    pid = os.fork()
-    if pid == 0:
-        with daemon.DaemonContext():
-            app.run(host, port)
-    else:
+    command = commandline_args['command']
+    if command == 'start':
+        host = "0.0.0.0"
+        port = commandline_args.get('port')
+        subprocess.call([
+            'gunicorn',
+            '--bind',
+            '0.0.0.0:1911',
+            '--pid',
+            '/tmp/gunicorn.pid',
+            '--daemon',
+            'consumer_contracts.mock_provider_server:app',
+        ])
         print('Mock provider started on {}:{}').format(host, port)

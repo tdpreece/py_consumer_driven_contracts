@@ -28,3 +28,5 @@ class MockProviderSmokeTest(TestCase):
         stdout = subprocess.check_output(
             ['mockprovider', '-p', port, 'stop']
         )
+        with self.assertRaises(requests.ConnectionError):
+            response = requests.get(status_url)

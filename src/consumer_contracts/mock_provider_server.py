@@ -1,4 +1,6 @@
 import argparse
+import os
+import signal
 import subprocess
 
 from flask import Flask
@@ -41,3 +43,7 @@ def main():
             'consumer_contracts.mock_provider_server:app',
         ])
         print('Mock provider started on {}:{}').format(host, port)
+    if command == 'stop':
+        with open('/tmp/gunicorn.pid', 'r') as fp:
+            pid = int(fp.read())
+            os.kill(pid, signal.SIGTERM)

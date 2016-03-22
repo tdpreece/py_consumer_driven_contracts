@@ -27,24 +27,32 @@ def status():
     return '{"status": "OK"}'
 
 
+def stop_server(pid_file):
+    with open(pid_file, 'r') as fp:
+        pid = int(fp.read())
+        os.kill(pid, signal.SIGTERM)
+
+
+def start_server(pid_file, address):
+    subprocess.call([
+        'gunicorn',
+        '--bind',
+        address,
+        '--pid',
+        pid_file,
+        '--daemon',
+        'consumer_contracts.mock_provider_server:app',
+    ])
+    print('Mock provider started on {}').format(address)
+
+
 def main():
     commandline_args = get_commandline_arguments()
     command = commandline_args['command']
     pid_file = '/tmp/gunicorn.pid'
+    port = commandline_args['port']
+    address = '0.0.0.0:{}'.format(port)
     if command == 'start':
-        host = "0.0.0.0"
-        port = commandline_args.get('port')
-        subprocess.call([
-            'gunicorn',
-            '--bind',
-            '0.0.0.0:1911',
-            '--pid',
-            pid_file,
-            '--daemon',
-            'consumer_contracts.mock_provider_server:app',
-        ])
-        print('Mock provider started on {}:{}').format(host, port)
+        start_server(pid_file, address)
     if command == 'stop':
-        with open(pid_file, 'r') as fp:
-            pid = int(fp.read())
-            os.kill(pid, signal.SIGTERM)
+        stop_server(pid_file)

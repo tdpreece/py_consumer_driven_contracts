@@ -1,4 +1,5 @@
 import subprocess
+from time import sleep
 from unittest import TestCase
 
 import requests
@@ -22,6 +23,7 @@ class TestControlOfMockProviderServer(TestCase):
         self.assertEqual(stdout.strip(), expected_startup_message)
 
         # Check server is running
+        sleep(1)
         response = requests.get(status_url)
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.json(), expected_status_json)

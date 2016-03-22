@@ -15,10 +15,11 @@ class TestControlOfMockProviderServer(TestCase):
             port
         )
         expected_status_json = {"status": "OK"}
+        serverctl = 'mockprovider'
 
         # start server
         stdout = subprocess.check_output(
-            ['mockprovider', '-p', port, 'start']
+            [serverctl, '-p', port, 'start']
         )
         self.assertEqual(stdout.strip(), expected_startup_message)
 
@@ -30,7 +31,7 @@ class TestControlOfMockProviderServer(TestCase):
 
         # stop server
         stdout = subprocess.check_output(
-            ['mockprovider', 'stop']
+            [serverctl, 'stop']
         )
         with self.assertRaises(requests.ConnectionError):
             response = requests.get(status_url)

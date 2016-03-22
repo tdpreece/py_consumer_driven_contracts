@@ -30,7 +30,7 @@ class TestControlOfMockProviderServer(TestCase):
 
         # stop server
         stdout = subprocess.check_output(
-            ['mockprovider', '-p', port, 'stop']
+            ['mockprovider', 'stop']
         )
         with self.assertRaises(requests.ConnectionError):
             response = requests.get(status_url)

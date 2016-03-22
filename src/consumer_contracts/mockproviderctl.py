@@ -3,10 +3,6 @@ import os
 import signal
 import subprocess
 
-from flask import Flask
-
-app = Flask(__name__)
-
 
 def get_commandline_arguments():
     parser = argparse.ArgumentParser()
@@ -20,11 +16,6 @@ def get_commandline_arguments():
     arg_dict = vars(parser.parse_args())
     arg_dict['command'] = arg_dict['command'][0]
     return arg_dict
-
-
-@app.route('/status')
-def status():
-    return '{"status": "OK"}'
 
 
 def stop_server(pid_file):
@@ -41,7 +32,7 @@ def start_server(pid_file, address):
         '--pid',
         pid_file,
         '--daemon',
-        'consumer_contracts.mockproviderctl:app',
+        'consumer_contracts.mockprovider:app',
     ])
     print('Mock provider started on {}').format(address)
 

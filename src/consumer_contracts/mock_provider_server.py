@@ -30,6 +30,7 @@ def status():
 def main():
     commandline_args = get_commandline_arguments()
     command = commandline_args['command']
+    pid_file = '/tmp/gunicorn.pid'
     if command == 'start':
         host = "0.0.0.0"
         port = commandline_args.get('port')
@@ -38,12 +39,12 @@ def main():
             '--bind',
             '0.0.0.0:1911',
             '--pid',
-            '/tmp/gunicorn.pid',
+            pid_file,
             '--daemon',
             'consumer_contracts.mock_provider_server:app',
         ])
         print('Mock provider started on {}:{}').format(host, port)
     if command == 'stop':
-        with open('/tmp/gunicorn.pid', 'r') as fp:
+        with open(pid_file, 'r') as fp:
             pid = int(fp.read())
             os.kill(pid, signal.SIGTERM)

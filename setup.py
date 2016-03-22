@@ -6,7 +6,7 @@ setup(
     packages=['consumer_contracts'],
     package_dir={'': 'src'},
     scripts=[path.join('src', 'bin', 'mockprovider')],
-    install_requires=[''],
+    install_requires=['gunicorn', 'Flask'],
     version='0.0.1',
     description='',
     author='Tim Preece',

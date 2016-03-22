@@ -15,7 +15,7 @@ class TestControlOfMockProviderServer(TestCase):
             port
         )
         expected_status_json = {"status": "OK"}
-        serverctl = 'mockprovider'
+        serverctl = 'mockproviderctl'
 
         # start server
         stdout = subprocess.check_output(

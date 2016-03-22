@@ -1,8 +1,0 @@
-#!python
-# Distutils will sort out the path to python in 
-# the shebang above.
-from consumer_contracts import mock_provider_server
-
-
-if __name__ == '__main__':
-    mock_provider_server.main()

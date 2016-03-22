@@ -1,11 +1,9 @@
-from os import path
 from setuptools import setup
 
 setup(
     name='consumer-contracts',
     packages=['consumer_contracts'],
     package_dir={'': 'src'},
-    scripts=[path.join('src', 'bin', 'mockproviderctl')],
     install_requires=['gunicorn', 'Flask'],
     version='0.0.1',
     description='',
@@ -15,4 +13,8 @@ setup(
     download_url='',
     keywords=['consumer', 'contract', 'integration', 'testing'],
     classifiers=[],
+    entry_points='''
+    [console_scripts]
+    mockproviderctl=consumer_contracts.mock_provider_server:main
+    '''
 )

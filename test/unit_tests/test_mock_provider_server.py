@@ -1,7 +1,7 @@
 import mock
 from unittest import TestCase
 
-from consumer_contracts.mock_provider_server import get_commandline_arguments
+from consumer_contracts.mockproviderctl import get_commandline_arguments
 
 
 class TestGetCommandLineArguments(TestCase):

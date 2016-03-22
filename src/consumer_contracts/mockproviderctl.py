@@ -41,7 +41,7 @@ def start_server(pid_file, address):
         '--pid',
         pid_file,
         '--daemon',
-        'consumer_contracts.mock_provider_server:app',
+        'consumer_contracts.mockproviderctl:app',
     ])
     print('Mock provider started on {}').format(address)
 

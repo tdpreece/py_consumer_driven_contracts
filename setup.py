@@ -15,6 +15,6 @@ setup(
     classifiers=[],
     entry_points='''
     [console_scripts]
-    mockproviderctl=consumer_contracts.mock_provider_server:main
+    mockproviderctl=consumer_contracts.mockproviderctl:main
     '''
 )

@@ -44,6 +44,6 @@ setup(
     [console_scripts]
     mockproviderctl=consumer_contracts.mockproviderctl:main
     ''',
-    ts_require=['tox'],
+    tests_require=['tox'],
     cmdclass={'test': Tox},
 )

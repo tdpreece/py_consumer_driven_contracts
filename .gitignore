@@ -1,7 +1,8 @@
-*.swp
+*.egg-info
 *.pyc
+*.swp
 .coverage
 .coverage.*
+.eggs
 .tox
 devenv/
-*.egg-info

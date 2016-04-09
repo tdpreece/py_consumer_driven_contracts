@@ -14,3 +14,13 @@ which is used to describe the state of the provider before a condumer issues
 a request.
 * the function used to match a consumer request to an expected request should
 be configurable.
+
+# Development
+## Run tests
+```python
+python setup.py test
+```
+To pass arguments to tox,
+```python
+python setup.py test -a "-epy27"
+```

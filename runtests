@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 this_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export COVERAGE_PROCESS_START="${this_dir}/.coveragerc"

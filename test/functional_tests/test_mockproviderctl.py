@@ -12,67 +12,77 @@ class MockProviderFunctionalTest(TestCase):
         self.port = '1911'
 
 
-def start_server(port, contracts_path):
-    serverctl = 'mockproviderctl'
-    stdout = subprocess.check_output(
-        [serverctl, '-p', port, '-c', contracts_path, 'start']
-    )
-    sleep(1)
-    return stdout
+class MockProviderServer(object):
+    def __init__(self, port, contracts_path):
+        self.port = port
+        self.contracts_path = contracts_path
+        self.host = '0.0.0.0'
+        self.serverctl = 'mockproviderctl'
 
+    def start_server(self):
+        stdout = subprocess.check_output(
+            [
+                self.serverctl,
+                '-p',
+                self.port,
+                '-c',
+                self.contracts_path,
+                'start'
+            ]
+        )
+        sleep(1)
+        return stdout
 
-def stop_server():
-    serverctl = 'mockproviderctl'
-    stdout = subprocess.check_output(
-        [serverctl, 'stop']
-    )
-    return stdout
+    def stop_server(self):
+        stdout = subprocess.check_output(
+            [self.serverctl, 'stop']
+        )
+        return stdout
+
+    def get(self, path, *args, **kwargs):
+        url = 'http://{}:{}{}'.format(self.host, self.port, path)
+        return requests.get(url, *args, **kwargs)
 
 
 class TestControlOfMockProviderServer(MockProviderFunctionalTest):
     def test_server_starts_up_and_stops(self):
-        status_url = 'http://{}:{}/status/'.format(self.host, self.port)
         this_dir = path.dirname(path.realpath(__file__))
         contracts_path = path.join(this_dir, 'contracts.py')
         expected_startup_message = 'Mock provider started on {}:{}'.format(
             self.host,
             self.port
         )
+        status_path = '/status/'
         expected_status_json = {"status": "OK"}
+        mock_provider_server = MockProviderServer(self.port, contracts_path)
 
-        stdout = start_server(self.port, contracts_path)
+        stdout = mock_provider_server.start_server()
+
         self.assertEqual(stdout.strip(), expected_startup_message)
-
-        # Check server is running
-        response = requests.get(status_url)
+        response = mock_provider_server.get(status_path)
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.json(), expected_status_json)
 
-        stdout = stop_server()
+        stdout = mock_provider_server.stop_server()
         with self.assertRaises(requests.ConnectionError):
-            response = requests.get(status_url)
+            response = mock_provider_server.get(status_path)
 
 
 class TestLoadingAndDisplayingOfConsumerContracts(MockProviderFunctionalTest):
-    # TODO
-    # Then test that the contract returned in the json matches config file
-    # Refactor:
-    # - Service driver
-    # - Service controller
     def test_returns_consumer_contract_json(self):
         this_dir = path.dirname(path.realpath(__file__))
         contracts_path = path.join(this_dir, 'contracts.py')
-        contracts_url = 'http://{}:{}/contracts/'.format(self.host, self.port)
         expected_contract_list_json = {
             u'consumer_contracts': {
                 u'contract1': {u'href': u'/contracts/contract1/'},
                 u'contract2': {u'href': u'/contracts/contract2/'},
             }
         }
-        start_server(self.port, contracts_path)
+        mock_provider_server = MockProviderServer(self.port, contracts_path)
+        mock_provider_server.start_server()
 
-        response = requests.get(contracts_url)
+        response = mock_provider_server.get('/contracts/')
         self.assertEqual(200, response.status_code)
         self.assertDictEqual(response.json(), expected_contract_list_json)
 
-        stop_server()
+        mock_provider_server.stop_server()

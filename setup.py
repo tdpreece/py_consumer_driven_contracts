@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 import sys
 
@@ -29,7 +29,7 @@ class Tox(TestCommand):
 
 setup(
     name='consumer-contracts',
-    packages=['consumer_contracts'],
+    packages=find_packages('src'),
     package_dir={'': 'src'},
     install_requires=['gunicorn', 'Flask'],
     version='0.0.1',

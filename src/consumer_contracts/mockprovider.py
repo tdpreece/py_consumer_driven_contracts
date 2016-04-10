@@ -9,23 +9,26 @@ from .blueprints.contracts import contracts_blueprint
 
 
 def create_app(contracts_path):
-    app = Flask(__name__)
-    load_contracts_config(app, contracts_path)
-    register_blueprints(app)
+    app = MockProviderApp(contracts_path)
     return app
 
 
-def load_contracts_config(app, contracts_path):
-    contracts_dir = path.dirname(contracts_path)
-    contracts_filename = path.basename(contracts_path)
-    contracts_module = trim_py_extension(contracts_filename)
-    sys.path.append(contracts_dir)
-    app.config.from_object(contracts_module)
+class MockProviderApp(Flask):
+    def __init__(self, contracts_path, *args, **kwargs):
+        super(MockProviderApp, self).__init__(__name__, *args, **kwargs)
+        self.load_contracts_config(contracts_path)
+        self.register_blueprints()
 
+    def load_contracts_config(self, contracts_path):
+        contracts_dir = path.dirname(contracts_path)
+        contracts_filename = path.basename(contracts_path)
+        contracts_module = trim_py_extension(contracts_filename)
+        sys.path.append(contracts_dir)
+        self.config.from_object(contracts_module)
 
-def register_blueprints(app):
-    app.register_blueprint(status_blueprint, url_prefix='/status')
-    app.register_blueprint(contracts_blueprint, url_prefix='/contracts')
+    def register_blueprints(self):
+        self.register_blueprint(status_blueprint, url_prefix='/status')
+        self.register_blueprint(contracts_blueprint, url_prefix='/contracts')
 
 
 def trim_py_extension(filename):

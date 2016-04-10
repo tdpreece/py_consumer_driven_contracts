@@ -6,6 +6,9 @@ from unittest import TestCase
 import requests
 
 
+TEST_PORT = 1911
+
+
 class MockProviderServer(object):
     def __init__(self, port, contracts_path):
         self.port = port
@@ -18,7 +21,7 @@ class MockProviderServer(object):
             [
                 self.serverctl,
                 '-p',
-                self.port,
+                str(self.port),
                 '-c',
                 self.contracts_path,
                 'start'
@@ -40,7 +43,7 @@ class MockProviderServer(object):
 
 class TestControlOfMockProviderServer(TestCase):
     def setUp(self):
-        self.port = '1911'
+        self.port = TEST_PORT
 
     def test_server_starts_up_and_stops(self):
         this_dir = path.dirname(path.realpath(__file__))
@@ -67,7 +70,7 @@ class TestControlOfMockProviderServer(TestCase):
 
 class TestLoadingAndDisplayingOfConsumerContracts(TestCase):
     def setUp(self):
-        self.port = '1911'
+        self.port = TEST_PORT
         this_dir = path.dirname(path.realpath(__file__))
         contracts_path = path.join(this_dir, 'contracts.py')
         self.mock_provider_server = \

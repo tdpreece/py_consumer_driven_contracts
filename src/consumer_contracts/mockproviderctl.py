@@ -7,6 +7,12 @@ import subprocess
 def get_commandline_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        '-c', '--consumer_contracts',
+        action='store',
+        required=False,
+        help='consumer_contracts module, e.g. consumer_contracts.consumer1'
+    )
+    parser.add_argument(
         '-p', '--port',
         action='store',
         required=False,

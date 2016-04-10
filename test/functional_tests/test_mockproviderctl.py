@@ -10,7 +10,7 @@ class TestControlOfMockProviderServer(TestCase):
     def test_server_starts_up_and_stops(self):
         host = '0.0.0.0'
         port = '1911'
-        status_url = 'http://{}:{}/status'.format(host, port)
+        status_url = 'http://{}:{}/status/'.format(host, port)
         expected_startup_message = 'Mock provider started on {}:{}'.format(
             host,
             port
@@ -51,7 +51,7 @@ class TestLoadingAndDisplayingOfConsumerContracts(TestCase):
         port = '1911'
         this_dir = path.dirname(path.realpath(__file__))
         contracts_file = path.join(this_dir)
-        contracts_url = 'http://{}:{}/contracts'.format(host, port)
+        contracts_url = 'http://{}:{}/contracts/'.format(host, port)
         expected_contract_list_json = {
             u'consumer_contracts': {
                 u'contract1': {u'href': u'/contracts/contract1/'},

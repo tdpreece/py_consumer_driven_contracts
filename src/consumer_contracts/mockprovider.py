@@ -30,10 +30,8 @@ def get_contracts():
     return json.dumps(contracts_list)
 
 
-def create_app():
+def create_app(contracts_path):
     app = Flask(__name__)
-    # TODO Pass this through
-    contracts_path = "/home/tdpreece/integration_projects/consumer_driven_contracts_using_flask/test/contracts.py"
     contracts_dir = path.dirname(contracts_path)
     contracts_filename = path.basename(contracts_path)
     contracts_module = trim_py_extension(contracts_filename)

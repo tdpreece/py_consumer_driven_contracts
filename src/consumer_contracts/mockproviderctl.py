@@ -7,10 +7,10 @@ import subprocess
 def get_commandline_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-c', '--consumer_contracts',
+        '-c', '--contracts_path',
         action='store',
         required=False,
-        help='consumer_contracts module, e.g. consumer_contracts.consumer1'
+        help='Path of consumer contracts file.'
     )
     parser.add_argument(
         '-p', '--port',
@@ -30,7 +30,10 @@ def stop_server(pid_file):
         os.kill(pid, signal.SIGTERM)
 
 
-def start_server(pid_file, address):
+def start_server(pid_file, address, contracts_path):
+    app = 'consumer_contracts.mockprovider:create_app("{}")'.format(
+        contracts_path
+    )
     subprocess.call([
         'gunicorn',
         '--bind',
@@ -38,7 +41,7 @@ def start_server(pid_file, address):
         '--pid',
         pid_file,
         '--daemon',
-        'consumer_contracts.mockprovider:create_app()',
+        app,
     ])
     print('Mock provider started on {}').format(address)
 
@@ -49,7 +52,9 @@ def main():
     pid_file = '/tmp/gunicorn.pid'
     port = commandline_args['port']
     address = '0.0.0.0:{}'.format(port)
+    # contracts_path = "/home/tdpreece/integration_projects/consumer_driven_contracts_using_flask/test/contracts.py"
     if command == 'start':
-        start_server(pid_file, address)
+        contracts_path = commandline_args['contracts_path']
+        start_server(pid_file, address, contracts_path)
     if command == 'stop':
         stop_server(pid_file)

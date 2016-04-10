@@ -11,6 +11,8 @@ class TestControlOfMockProviderServer(TestCase):
         host = '0.0.0.0'
         port = '1911'
         status_url = 'http://{}:{}/status/'.format(host, port)
+        this_dir = path.dirname(path.realpath(__file__))
+        contracts_path = path.join(this_dir, 'contracts.py')
         expected_startup_message = 'Mock provider started on {}:{}'.format(
             host,
             port
@@ -20,7 +22,7 @@ class TestControlOfMockProviderServer(TestCase):
 
         # start server
         stdout = subprocess.check_output(
-            [serverctl, '-p', port, '-c', 'contracts', 'start']
+            [serverctl, '-p', port, '-c', contracts_path, 'start']
         )
         self.assertEqual(stdout.strip(), expected_startup_message)
 
@@ -40,8 +42,6 @@ class TestControlOfMockProviderServer(TestCase):
 
 class TestLoadingAndDisplayingOfConsumerContracts(TestCase):
     # TODO
-    # This test will specify a python configuration file
-    # Then tests that /contracts returns a json doc lising the contracts
     # Then test that the contract returned in the json matches config file
     # Refactor:
     # - Service driver
@@ -50,7 +50,7 @@ class TestLoadingAndDisplayingOfConsumerContracts(TestCase):
         host = '0.0.0.0'
         port = '1911'
         this_dir = path.dirname(path.realpath(__file__))
-        contracts_file = path.join(this_dir)
+        contracts_path = path.join(this_dir, 'contracts.py')
         contracts_url = 'http://{}:{}/contracts/'.format(host, port)
         expected_contract_list_json = {
             u'consumer_contracts': {
@@ -62,7 +62,7 @@ class TestLoadingAndDisplayingOfConsumerContracts(TestCase):
 
         # start server
         subprocess.check_output(
-            [serverctl, '-p', port, '-c', contracts_file, 'start']
+            [serverctl, '-p', port, '-c', contracts_path, 'start']
         )
 
         sleep(1)

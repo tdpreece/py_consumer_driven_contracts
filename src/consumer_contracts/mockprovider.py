@@ -1,33 +1,15 @@
-import json
 from os import path
 import re
 import sys
-from flask import current_app, Blueprint, Flask
 
+from flask import Flask
 
-status_blueprint = Blueprint('status', __name__)
-contracts_blueprint = Blueprint('contracts', __name__)
+from .blueprints.status import status_blueprint
+from .blueprints.contracts import contracts_blueprint
 
 
 def trim_py_extension(filename):
     return re.match('(.*)\.py', filename).groups()[0]
-
-
-@status_blueprint.route('/')
-def status():
-    return '{"status": "OK"}'
-
-
-@contracts_blueprint.route('/')
-def get_contracts():
-    contracts = current_app.config['CONSUMER_CONTRACTS']
-    contracts_list = {
-        'consumer_contracts': {
-            k: {u'href': u'/contracts/{}/'.format(k)}
-            for k, v in contracts.items()
-        }
-    }
-    return json.dumps(contracts_list)
 
 
 def create_app(contracts_path):

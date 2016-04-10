@@ -52,7 +52,6 @@ def main():
     pid_file = '/tmp/gunicorn.pid'
     port = commandline_args['port']
     address = '0.0.0.0:{}'.format(port)
-    # contracts_path = "/home/tdpreece/integration_projects/consumer_driven_contracts_using_flask/test/contracts.py"
     if command == 'start':
         contracts_path = commandline_args['contracts_path']
         start_server(pid_file, address, contracts_path)

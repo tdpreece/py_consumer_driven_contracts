@@ -5,4 +5,5 @@
 .coverage.*
 .eggs
 .tox
-devenv/
+devenv27/
+devenv34/

@@ -1,3 +1,7 @@
+# TODO
+* Fix coverage
+* Python 34 - double check strings
+
 # Requirements
 * A provider stub that can be used over http by consumers should be available
 because consumers may not be Python projects.

@@ -33,8 +33,3 @@ class MockProviderApp(Flask):
 
 def trim_py_extension(filename):
     return re.match('(.*)\.py', filename).groups()[0]
-
-
-if __name__ == '__main__':
-    app = create_app()
-    app.run()

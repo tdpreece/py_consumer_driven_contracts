@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from os import path
 import subprocess
 from time import sleep
@@ -28,13 +29,13 @@ class MockProviderServer(object):
             ]
         )
         sleep(1)
-        return stdout
+        return stdout.decode('utf-8')
 
     def stop_server(self):
         stdout = subprocess.check_output(
             [self.serverctl, 'stop']
         )
-        return stdout
+        return stdout.decode('utf-8')
 
     def get(self, path, *args, **kwargs):
         url = 'http://{}:{}{}'.format(self.host, self.port, path)
@@ -82,9 +83,9 @@ class TestLoadingAndDisplayingOfConsumerContracts(TestCase):
 
     def test_returns_consumer_contract_json(self):
         expected_contract_list_json = {
-            u'consumer_contracts': {
-                u'contract1': {u'href': u'/contracts/contract1/'},
-                u'contract2': {u'href': u'/contracts/contract2/'},
+            'consumer_contracts': {
+                'contract1': {'href': '/contracts/contract1/'},
+                'contract2': {'href': '/contracts/contract2/'},
             }
         }
 

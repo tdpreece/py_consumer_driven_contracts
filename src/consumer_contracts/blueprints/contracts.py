@@ -12,7 +12,7 @@ def get_contracts():
     contracts_list = {
         'consumer_contracts': {
             k: {u'href': u'/contracts/{}/'.format(k)}
-            for k, v in contracts.items()
+            for k, v in list(contracts.items())
         }
     }
     return json.dumps(contracts_list)

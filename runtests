@@ -9,5 +9,5 @@ find . -name '*.pyc' -delete
 coverage erase
 rm -rf "$this_dir/.coverage.*"
 python -m unittest discover -s test -p '*.py'
-coverage combine
-coverage report
+# coverage combine
+# coverage report

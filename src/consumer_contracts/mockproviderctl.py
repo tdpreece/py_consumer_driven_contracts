@@ -1,3 +1,4 @@
+from __future__ import print_function, unicode_literals
 import argparse
 import os
 import signal
@@ -43,7 +44,7 @@ def start_server(pid_file, address, contracts_path):
         '--daemon',
         app,
     ])
-    print('Mock provider started on {}').format(address)
+    print(('Mock provider started on {}').format(address))
 
 
 def main():
